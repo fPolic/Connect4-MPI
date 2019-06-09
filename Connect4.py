@@ -13,7 +13,7 @@ comm = MPI.COMM_WORLD
 RANK = comm.Get_rank()
 SIZE = comm.Get_size()
 MASTER_PID = 0
-DEPTH = 5
+DEPTH = 4
 
 BOARD = Board()
 

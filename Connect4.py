@@ -1,3 +1,4 @@
+import os
 import time
 from typing import List
 
@@ -63,25 +64,27 @@ def game_over(mover: Mover):
 
 def master_process():
     # setup board and screen
+    start = time.time()
+
     BOARD.load()
-    BOARD.render()
+    # BOARD.render()
 
-    while True:
-        column = int(input("Select column: "))
+    # while True:
 
-        if not BOARD.is_move_legal(column):
-            BOARD.render('Illegal move')
-            continue
+    BOARD.move(7, Mover.PLAYER)  # move player
+    # BOARD.render()
+    if BOARD.is_game_over(): game_over(Mover.PLAYER)
 
-        BOARD.move(column, Mover.PLAYER, log=True)  # move player
-        BOARD.render()
-        if BOARD.is_game_over(): game_over(Mover.PLAYER)
+    # print('CPU is thinking...', flush=True)
 
-        print('CPU is thinking...', flush=True)
+    BOARD.move(CPU_move(), Mover.CPU)  # move CPU
+    # BOARD.render()
+    if BOARD.is_game_over(): game_over(Mover.CPU)
 
-        BOARD.move(CPU_move(), Mover.CPU, log=True)  # move CPU
-        BOARD.render()
-        if BOARD.is_game_over(): game_over(Mover.CPU)
+    end = time.time()
+    print(end - start, flush=True)
+
+    return
 
 
 def worker_process():

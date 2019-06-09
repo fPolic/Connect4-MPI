@@ -69,7 +69,6 @@ def calculate_best_move(results) -> int:
         if res > best_result or (res == best_result and random.random() > 0.5):
             best_result = res
             best_col = column
-            print(best_col, str(best_result), flush=True)
 
     return best_col
 

@@ -1,5 +1,4 @@
 import os
-
 from mpi4py import MPI
 
 comm = MPI.COMM_WORLD
@@ -32,6 +31,11 @@ class Message:
     def from_dict(cls, dict: dict):
         return cls(dict['type'], dict['payload'])
 
+
+#
+# Wrapper for sending and receiving messages.
+# Function parses mpi dict to/from Message object.
+#
 
 def send_msg_to_worker(msg: str or object, worker_id: int) -> None:
     if isinstance(msg, Message):

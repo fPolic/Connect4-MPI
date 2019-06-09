@@ -59,7 +59,7 @@ class Board:
         if msg != '':
             print(msg, flush=True)
 
-    def move(self, column: int, mover: Mover):
+    def move(self, column: int, mover: Mover, log: bool = False):
         index = self.total_rows - 1  # add to bottom row
         for i, r in enumerate(self.__state):
             if r[column - 1] != '0':
@@ -67,6 +67,9 @@ class Board:
                 break
         self.__state[index][column - 1] = mover
         self.moves_stack.append([index, column - 1])
+        if log:
+            mvr = 'CPU' if mover == Mover.CPU else 'PLAYER'
+            print('Last' + mvr + ' move --> ', column, ' \n')
 
     def undo_move(self):
         # unset last element of array

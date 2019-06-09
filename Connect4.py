@@ -1,8 +1,4 @@
-import itertools
-import operator
-import random
 import time
-from functools import reduce
 from typing import List
 
 import helpers
@@ -49,7 +45,7 @@ def CPU_move():
 
         if message.type == EVENT.SEND_RESULT:
             data = message.payload  # [result, column]
-            results[data[1]].append(data[1])
+            results[data[1]].append(data[0])
 
     message_board_complete = Message(EVENT.BOARD_COMPLETE)
     for pid in range(1, SIZE): helpers.send_msg_to_worker(message_board_complete, pid)
@@ -107,7 +103,8 @@ def worker_process():
 
                 moves_made = 0
                 last_mover = Mover.CPU
-                tasks = task_message.payload
+
+                tasks: List = task_message.payload
                 for i, move in enumerate(tasks):
                     # play moves from task and check if move leeds to game over
                     mover = Mover.CPU if i % 2 == 0 else Mover.PLAYER
@@ -121,7 +118,6 @@ def worker_process():
                             break
 
                 result = board.evaluate(last_mover, DEPTH - len(tasks))
-                print('work ', RANK, ' --> ', result)
                 helpers.send_msg_to_master(Message(EVENT.SEND_RESULT, (result, tasks[0])))
 
                 for _ in range(moves_made): board.undo_move()  # clean moves
